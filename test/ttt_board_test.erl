@@ -2,12 +2,22 @@
 -include("../src/ttt_board.hrl").
 -include("ttt_common.hrl").
 
-new_board_defaults_to_board_size_of_3_test() ->
+% Needed to separate test for number_of_spaces and new_board()
+% Update if board representation changes
+new_board(ListOfBoardValues) ->
+  ListOfBoardValues.
+
+new_board_returns_a_board_test() ->
   NewBoard = ttt_board:new_board(),
 
-  ?assertEqual(3, length(NewBoard)).
+  ?assertNotEqual(ok, NewBoard).
 
 can_return_number_of_spaces_on_board_test() ->
+  NewBoard = new_board([1, 2, 3]),
+
+  ?assertEqual(3, ttt_board:number_of_spaces(NewBoard)).
+
+new_board_defaults_to_size_3_if_no_size_provided_test() ->
   NewBoard = ttt_board:new_board(),
 
   ?assertEqual(9, ttt_board:number_of_spaces(NewBoard)).
@@ -43,5 +53,5 @@ can_check_for_an_empty_space_test_() ->
   NewBoard = ttt_board:new_board(),
   UpdatedBoard = ttt_board:set_space_value(1, not_empty, NewBoard),
 
-  [?_assert(ttt_board:is_empty_space(1, UpdatedBoard) =:= false),
+  [?_assertNot(ttt_board:is_empty_space(1, UpdatedBoard)),
    ?_assert(ttt_board:is_empty_space(2, UpdatedBoard))].
