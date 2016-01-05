@@ -48,10 +48,3 @@ can_set_value_of_a_space_test_() ->
   [?_assertEqual(ttt_board:value_at(1, UpdatedBoard1), not_empty),
    ?_assertEqual(ttt_board:value_at(5, UpdatedBoard2), not_empty),
    ?_assertEqual(ttt_board:value_at(9, UpdatedBoard3), not_empty)].
-
-can_check_for_an_empty_space_test_() ->
-  NewBoard = ttt_board:new_board(),
-  UpdatedBoard = ttt_board:set_space_value(1, not_empty, NewBoard),
-
-  [?_assertNot(ttt_board:is_empty_space(1, UpdatedBoard)),
-   ?_assert(ttt_board:is_empty_space(2, UpdatedBoard))].
