@@ -6,14 +6,11 @@
          number_of_spaces/1,
          value_at/2,
          set_space_value/3,
+         number_of_empty_spaces/1,
          has_empty_space/1,
          rows/1,
          columns/1,
          diagonals/1]).
-
-list_of_empty_spaces(RemainingSpaces) when RemainingSpaces > 0 ->
-  [?EMPTY_SPACE | list_of_empty_spaces(RemainingSpaces - 1)];
-list_of_empty_spaces(_) -> [].
 
 new_board() ->
   new_board(?DEFAULT_BOARD_SIZE).
@@ -21,6 +18,10 @@ new_board(BoardSize) when is_integer(BoardSize) ->
   list_of_empty_spaces(BoardSize * BoardSize);
 new_board(ListOfBoardValues) when is_list(ListOfBoardValues) ->
   ListOfBoardValues.
+
+list_of_empty_spaces(RemainingSpaces) when RemainingSpaces > 0 ->
+  [?EMPTY_SPACE | list_of_empty_spaces(RemainingSpaces - 1)];
+list_of_empty_spaces(_) -> [].
 
 to_list(Board) ->
   Board.
@@ -40,10 +41,14 @@ set_space_value(SpaceIndex, UpdatedValue, Board) ->
   [UpdatedValue] ++
   lists:nthtail(SpaceIndex, Board).
 
-has_empty_space(Board) ->
-  lists:any(fun(Space) ->
-    Space =:= ?EMPTY_SPACE
-  end, Board).
+number_of_empty_spaces(Board) -> number_of_empty_spaces(Board, 0).
+number_of_empty_spaces([], Count) -> Count;
+number_of_empty_spaces([?EMPTY_SPACE | RemainingBoardValues], Count) ->
+  number_of_empty_spaces(RemainingBoardValues, Count + 1);
+number_of_empty_spaces([_ | RemainingBoardValues], Count) ->
+  number_of_empty_spaces(RemainingBoardValues, Count).
+
+has_empty_space(Board) -> number_of_empty_spaces(Board) > 0.
 
 rows(Board) ->
   split_rows(board_size(Board), Board).
