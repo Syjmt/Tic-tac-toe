@@ -67,30 +67,30 @@ can_check_if_board_has_empty_spaces_test() ->
    ?_assertNot(ttt_board:has_empty_space(BoardWithoutEmptySpace))].
 
 can_return_board_rows_test() ->
-  ExpectedRows = [[?PLAYER_1, ?EMPTY_SPACE, ?EMPTY_SPACE],
-                  [?PLAYER_1, ?PLAYER_2,    ?EMPTY_SPACE],
-                  [?PLAYER_2, ?EMPTY_SPACE, ?PLAYER_1]],
-  NewBoard = ttt_board:new_board([?PLAYER_1, ?EMPTY_SPACE, ?EMPTY_SPACE,
-                                  ?PLAYER_1, ?PLAYER_2,    ?EMPTY_SPACE,
-                                  ?PLAYER_2, ?EMPTY_SPACE, ?PLAYER_1]),
+  ExpectedRows = [[player_1, ?EMPTY_SPACE, ?EMPTY_SPACE],
+                  [player_1, player_2,     ?EMPTY_SPACE],
+                  [player_2, ?EMPTY_SPACE, player_1]],
+  NewBoard = ttt_board:new_board([player_1, ?EMPTY_SPACE, ?EMPTY_SPACE,
+                                  player_1, player_2,     ?EMPTY_SPACE,
+                                  player_2, ?EMPTY_SPACE, player_1]),
 
   ?assertEqual(ExpectedRows, ttt_board:rows(NewBoard)).
 
 can_return_board_columns_test() ->
-  ExpectedColumns = [[?PLAYER_1,    ?PLAYER_1,    ?PLAYER_2],
-                     [?EMPTY_SPACE, ?PLAYER_2,    ?EMPTY_SPACE],
-                     [?EMPTY_SPACE, ?EMPTY_SPACE, ?PLAYER_1]],
-  NewBoard = ttt_board:new_board([?PLAYER_1, ?EMPTY_SPACE, ?EMPTY_SPACE,
-                                  ?PLAYER_1, ?PLAYER_2,    ?EMPTY_SPACE,
-                                  ?PLAYER_2, ?EMPTY_SPACE, ?PLAYER_1]),
+  ExpectedColumns = [[player_1,     player_1,     player_2],
+                     [?EMPTY_SPACE, player_2,     ?EMPTY_SPACE],
+                     [?EMPTY_SPACE, ?EMPTY_SPACE, player_1]],
+  NewBoard = ttt_board:new_board([player_1, ?EMPTY_SPACE, ?EMPTY_SPACE,
+                                  player_1, player_2,     ?EMPTY_SPACE,
+                                  player_2, ?EMPTY_SPACE, player_1]),
 
   ?assertEqual(ExpectedColumns, ttt_board:columns(NewBoard)).
 
 can_return_board_diagonals_test() ->
-  ExpectedDiagonals = [[?PLAYER_1, ?PLAYER_2, ?PLAYER_1],
-                       [?PLAYER_2, ?PLAYER_2, ?EMPTY_SPACE]],
-  NewBoard = ttt_board:new_board([?PLAYER_1, ?EMPTY_SPACE, ?EMPTY_SPACE,
-                                  ?PLAYER_1, ?PLAYER_2,    ?EMPTY_SPACE,
-                                  ?PLAYER_2, ?EMPTY_SPACE, ?PLAYER_1]),
+  ExpectedDiagonals = [[player_1, player_2, player_1],
+                       [player_2, player_2, ?EMPTY_SPACE]],
+  NewBoard = ttt_board:new_board([player_1, ?EMPTY_SPACE, ?EMPTY_SPACE,
+                                  player_1, player_2,     ?EMPTY_SPACE,
+                                  player_2, ?EMPTY_SPACE, player_1]),
 
   ?assertEqual(ExpectedDiagonals, ttt_board:diagonals(NewBoard)).
