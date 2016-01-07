@@ -49,11 +49,11 @@ new_board_has_empty_spaces_test() ->
     ?assertEqual(?EMPTY_SPACE, lists:nth(SpaceIndex, BoardAsList))
     end, lists:seq(1, ttt_board:number_of_spaces(NewBoard))).
 
-can_set_value_of_a_space_test_() ->
+can_update_board_test_() ->
   NewBoard = ttt_board:new_board(),
-  UpdatedBoard1 = ttt_board:set_space_value(1, not_empty, NewBoard),
-  UpdatedBoard2 = ttt_board:set_space_value(5, not_empty, NewBoard),
-  UpdatedBoard3 = ttt_board:set_space_value(9, not_empty, NewBoard),
+  UpdatedBoard1 = ttt_board:update_board(1, not_empty, NewBoard),
+  UpdatedBoard2 = ttt_board:update_board(5, not_empty, NewBoard),
+  UpdatedBoard3 = ttt_board:update_board(9, not_empty, NewBoard),
 
   [?_assertEqual(ttt_board:value_at(1, UpdatedBoard1), not_empty),
    ?_assertEqual(ttt_board:value_at(5, UpdatedBoard2), not_empty),
@@ -63,6 +63,15 @@ can_return_the_number_of_empty_spaces_test() ->
   NewBoard = ttt_board:new_board([?EMPTY_SPACE, not_empty, not_empty, ?EMPTY_SPACE]),
 
   ?assertEqual(2, ttt_board:number_of_empty_spaces(NewBoard)).
+
+can_return_the_indices_of_a_value_test_() ->
+  NoEmptySpaces = ttt_board:new_board([not_empty, not_empty]),
+  SomeEmptySpaces = ttt_board:new_board([?EMPTY_SPACE, not_empty]),
+  AllEmptySpaces = ttt_board:new_board([?EMPTY_SPACE, ?EMPTY_SPACE]),
+
+  [?_assertEqual([], ttt_board:indices_of(?EMPTY_SPACE, NoEmptySpaces)),
+   ?_assertEqual([1], ttt_board:indices_of(?EMPTY_SPACE, SomeEmptySpaces)),
+   ?_assertEqual([1,2], ttt_board:indices_of(?EMPTY_SPACE, AllEmptySpaces))].
 
 can_check_if_board_has_empty_spaces_test() ->
   BoardWithEmptySpace = ttt_board:new_board([?EMPTY_SPACE]),

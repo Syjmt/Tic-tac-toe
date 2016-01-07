@@ -13,8 +13,9 @@ current_player(Board) ->
   NumberOfPlayerMoves = ttt_board:number_of_spaces(Board) -
                         ttt_board:number_of_empty_spaces(Board),
   IsPlayer1Turn = (NumberOfPlayerMoves rem 2) =:= 0,
-  if IsPlayer1Turn -> ?PLAYER_1;
-     true -> ?PLAYER_2
+  case IsPlayer1Turn of
+    true -> ?PLAYER_1;
+    _Else -> ?PLAYER_2
   end.
 
 is_game_over(Board) ->
