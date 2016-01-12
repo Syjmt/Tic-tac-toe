@@ -4,20 +4,17 @@
 -include("ttt_common.hrl").
 
 
-what_are_the_values_test() ->
-  Board = ttt_board:new_board([?PLAYER_1, ?EMPTY_SPACE, ?EMPTY_SPACE,
-                               ?PLAYER_1, ?PLAYER_2,    ?EMPTY_SPACE,
-                               ?PLAYER_2, ?EMPTY_SPACE, ?EMPTY_SPACE]),
-  UpdatedBoard = ttt_ai:make_move(Board),
-
-  ?assertEqual(?PLAYER_1, ttt_board:value_at(3, UpdatedBoard)).
-
-first_move_test() ->
+takes_center_or_corner_space_for_first_move_test() ->
   Board = ttt_board:new_board(),
   ComputerPlayerValue = ?PLAYER_1,
   UpdatedBoard = ttt_ai:make_move(Board),
+  MovedToCenterOrCorner = (ComputerPlayerValue =:= ttt_board:value_at(1, UpdatedBoard)) or
+                          (ComputerPlayerValue =:= ttt_board:value_at(3, UpdatedBoard)) or
+                          (ComputerPlayerValue =:= ttt_board:value_at(5, UpdatedBoard)) or
+                          (ComputerPlayerValue =:= ttt_board:value_at(7, UpdatedBoard)) or
+                          (ComputerPlayerValue =:= ttt_board:value_at(9, UpdatedBoard)),
 
-  ?assertEqual(ComputerPlayerValue, ttt_board:value_at(1, UpdatedBoard)).
+  ?assert(MovedToCenterOrCorner).
 
 can_make_winning_move_test_() ->
   Board1 = ttt_board:new_board([?PLAYER_1,    ?PLAYER_2,    ?PLAYER_1,

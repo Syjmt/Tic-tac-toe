@@ -1,7 +1,9 @@
 -module(ttt_ai).
 -include("ttt_ai.hrl").
 -include("ttt_board.hrl").
--export([make_move/1]).
+-export([make_move/1,
+         spawn_find_processes/3,
+         calculate_score/3]).
 
 make_move(Board) ->
   BestMove = find_best_move(Board),
@@ -10,19 +12,31 @@ make_move(Board) ->
 
 find_best_move(Board) ->
   DefaultBestIndex = 0,
-  find_best_move(Board, ?INDICES_OF_EMPTY_SPACES(Board), ?DEFAULT_BEST_MOVE_VALUE, DefaultBestIndex).
-find_best_move(_, [], _, BestIndex) -> BestIndex;
-find_best_move(Board, [CurrentIndex | RemainingIndices], BestMoveValue, BestIndex) ->
+  MyPid = self(),
+  spawn(ttt_ai, spawn_find_processes, [MyPid, Board, ?INDICES_OF_EMPTY_SPACES(Board)]),
+  find_best_move(?DEFAULT_BEST_MOVE_VALUE, DefaultBestIndex, length(?INDICES_OF_EMPTY_SPACES(Board))).
+find_best_move(BestMoveValue, BestIndex, RemainingProcesses) when RemainingProcesses > 0 ->
+  receive
+    {CurrentIndex, CurrentMoveValue} ->
+      case is_better_move(BestMoveValue, CurrentMoveValue) of
+        true ->
+          find_best_move(CurrentMoveValue, CurrentIndex, RemainingProcesses-1);
+        _Else ->
+          find_best_move(BestMoveValue, BestIndex, RemainingProcesses-1)
+      end
+  end;
+find_best_move(_, BestIndex, _) -> BestIndex.
+
+spawn_find_processes(ParentPid, _, []) -> ok;
+spawn_find_processes(ParentPid, Board, [CurrentIndex | RemainingIndices]) ->
+  spawn(ttt_ai, calculate_score, [ParentPid, Board, CurrentIndex]),
+  spawn_find_processes(ParentPid, Board, RemainingIndices).
+
+calculate_score(ParentPid, Board, Index) ->
   CurrentPlayer = ttt_game_logic:current_player(Board),
-  UpdatedBoard = ttt_board:update_board(CurrentIndex, CurrentPlayer, Board),
+  UpdatedBoard = ttt_board:update_board(Index, CurrentPlayer, Board),
   IsGameOver = ttt_game_logic:is_game_over(UpdatedBoard),
-  CurrentMoveValue = mini_max_value(CurrentPlayer, UpdatedBoard, IsGameOver),
-  case is_better_move(BestMoveValue, CurrentMoveValue) of
-    true ->
-      find_best_move(Board, RemainingIndices, CurrentMoveValue, CurrentIndex);
-    _Else ->
-      find_best_move(Board, RemainingIndices, BestMoveValue, BestIndex)
-  end.
+  ParentPid ! {Index, mini_max_value(CurrentPlayer, UpdatedBoard, IsGameOver)}.
 
 mini_max_value(MyPlayerValue, Board, IsGameOver) when IsGameOver ->
   case ttt_game_logic:winner(Board) of
