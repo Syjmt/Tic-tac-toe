@@ -14,9 +14,7 @@
          indices_of/2]).
 
 new_board() ->
-  new_board(?DEFAULT_BOARD_SIZE).
-new_board(BoardSize) when is_integer(BoardSize) ->
-  list_of_empty_spaces(BoardSize * BoardSize);
+  list_of_empty_spaces(?DEFAULT_BOARD_SIZE * ?DEFAULT_BOARD_SIZE).
 new_board(ListOfBoardValues) when is_list(ListOfBoardValues) ->
   ListOfBoardValues.
 

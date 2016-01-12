@@ -24,11 +24,6 @@ new_board_defaults_to_size_3_if_no_size_provided_test() ->
 
   ?assertEqual(9, ttt_board:number_of_spaces(NewBoard)).
 
-new_board_can_take_a_board_size_test() ->
-  NewBoard = ttt_board:new_board(4),
-
-  ?assertEqual(16, ttt_board:number_of_spaces(NewBoard)).
-
 new_board_can_take_a_list_of_board_values_test() ->
   ExpectedBoard = [1, 2, 3],
   NewBoard = ttt_board:new_board(ExpectedBoard),

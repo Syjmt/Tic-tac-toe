@@ -1,0 +1,6 @@
+-define(DEFAULT_BEST_MOVE_VALUE, {infinity, -1}).
+-define(INDICES_OF_EMPTY_SPACES(Board), ttt_board:indices_of(?EMPTY_SPACE, Board)).
+-define(SCORE_TO_MINIMIZE, "ScoreToMinimize").
+-define(SCORE_TO_MAXIMIZE, "ScoreToMaximize").
+-define(MIN(MiniMaxMap), maps:get(?SCORE_TO_MINIMIZE, MiniMaxMap)).
+-define(MAX(MiniMaxMap), maps:get(?SCORE_TO_MAXIMIZE, MiniMaxMap)).
