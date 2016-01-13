@@ -27,7 +27,7 @@ find_best_move(BestMoveValue, BestIndex, RemainingProcesses) when RemainingProce
   end;
 find_best_move(_, BestIndex, _) -> BestIndex.
 
-spawn_find_processes(ParentPid, _, []) -> ok;
+spawn_find_processes(_, _, []) -> ok;
 spawn_find_processes(ParentPid, Board, [CurrentIndex | RemainingIndices]) ->
   spawn(ttt_ai, calculate_score, [ParentPid, Board, CurrentIndex]),
   spawn_find_processes(ParentPid, Board, RemainingIndices).
