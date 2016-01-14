@@ -1,3 +1,4 @@
 -define(PLAYER_1, player_1).
 -define(PLAYER_2, player_2).
--record(player, {type, value}).
+-define(HUMAN, human).
+-define(COMPUTER, computer).

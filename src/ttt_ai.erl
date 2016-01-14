@@ -1,11 +1,11 @@
 -module(ttt_ai).
 -include("ttt_ai.hrl").
 -include("ttt_board.hrl").
--export([make_move/1,
+-export([move/1,
          spawn_find_processes/3,
          calculate_score/3]).
 
-make_move(Board) ->
+move(Board) ->
   BestMove = find_best_move(Board),
   MyPlayerValue = ttt_game_logic:current_player(Board),
   ttt_board:update_board(BestMove, MyPlayerValue, Board).

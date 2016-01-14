@@ -1,0 +1,4 @@
+-define(HUMAN_V_HUMAN, 1).
+-define(HUMAN_V_COMPUTER, 2).
+-define(COMPUTER_V_HUMAN, 3).
+-define(COMPUTER_V_COMPUTER, 4).
