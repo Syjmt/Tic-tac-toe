@@ -2,8 +2,8 @@
 -include("ttt_ai.hrl").
 -include("ttt_board.hrl").
 -export([move/1,
-         spawn_find_processes/3,
-         calculate_score/3]).
+         spawn_find_path_value_processes/3,
+         find_path_value/3]).
 
 move(Board) ->
   BestMove = find_best_move(Board),
@@ -13,7 +13,7 @@ move(Board) ->
 find_best_move(Board) ->
   DefaultBestIndex = 0,
   MyPid = self(),
-  spawn(ttt_ai, spawn_find_processes, [MyPid, Board, ?INDICES_OF_EMPTY_SPACES(Board)]),
+  spawn(ttt_ai, spawn_find_path_value_processes, [MyPid, Board, ?INDICES_OF_EMPTY_SPACES(Board)]),
   find_best_move(?DEFAULT_BEST_MOVE_VALUE, DefaultBestIndex, length(?INDICES_OF_EMPTY_SPACES(Board))).
 find_best_move(BestMoveValue, BestIndex, RemainingProcesses) when RemainingProcesses > 0 ->
   receive
@@ -27,12 +27,12 @@ find_best_move(BestMoveValue, BestIndex, RemainingProcesses) when RemainingProce
   end;
 find_best_move(_, BestIndex, _) -> BestIndex.
 
-spawn_find_processes(_, _, []) -> ok;
-spawn_find_processes(ParentPid, Board, [CurrentIndex | RemainingIndices]) ->
-  spawn(ttt_ai, calculate_score, [ParentPid, Board, CurrentIndex]),
-  spawn_find_processes(ParentPid, Board, RemainingIndices).
+spawn_find_path_value_processes(_, _, []) -> ok;
+spawn_find_path_value_processes(ParentPid, Board, [CurrentIndex | RemainingIndices]) ->
+  spawn(ttt_ai, find_path_value, [ParentPid, Board, CurrentIndex]),
+  spawn_find_path_value_processes(ParentPid, Board, RemainingIndices).
 
-calculate_score(ParentPid, Board, Index) ->
+find_path_value(ParentPid, Board, Index) ->
   CurrentPlayer = ttt_game_logic:current_player(Board),
   UpdatedBoard = ttt_board:update_board(Index, CurrentPlayer, Board),
   IsGameOver = ttt_game_logic:is_game_over(UpdatedBoard),

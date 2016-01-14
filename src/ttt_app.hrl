@@ -1,8 +1,8 @@
 -define(PLAYER_1_MARK, "X").
 -define(PLAYER_2_MARK, "O").
--define(CATS_GAME_MESSAGE, "~nCats game!").
--define(PLAYER_1_WINS_MESSAGE, "~nPlayer 1 wins!").
--define(PLAYER_2_WINS_MESSAGE, "~nPlayer 2 wins!").
+-define(CATS_GAME_MESSAGE, "~nCats game!~n").
+-define(PLAYER_1_WINS_MESSAGE, "~nPlayer 1 wins!~n").
+-define(PLAYER_2_WINS_MESSAGE, "~nPlayer 2 wins!~n").
 -define(INPUT_INVALID_MESSAGE, "Invalid input. Please input an integer between ~w and ~w.~n").
 -define(INPUT_OUT_OF_BOUNDS_MESSAGE, "~w is an invalid option. Please input an integer between ~w and ~w.~n").
 -record(input_type, {lower_bound,
@@ -17,6 +17,12 @@
 -define(GAME_MODE, #input_type{lower_bound = ?GAME_MODE_MIN,
                                upper_bound = ?GAME_MODE_MAX,
                                prompt_message = ?GAME_MODE_PROMPT_MESSAGE}).
+-define(PLAY_AGAIN_MIN, 1).
+-define(PLAY_AGAIN_MAX, 2).
+-define(PLAY_AGAIN_PROMPT_MESSAGE, "Would you like to play again? (1=yes, 2=no): ").
+-define(PLAY_AGAIN, #input_type{lower_bound = ?PLAY_AGAIN_MIN,
+                                 upper_bound = ?PLAY_AGAIN_MAX,
+                                 prompt_message = ?PLAY_AGAIN_PROMPT_MESSAGE}).
 -define(PLAYER_MOVE_MIN, 1).
 -define(PLAYER_MOVE_MAX(GameState), ttt_api:number_of_spaces(GameState)).
 -define(PLAYER_MOVE_PROMPT_MESSAGE, "Please enter a board space value: ").

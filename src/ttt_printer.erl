@@ -1,4 +1,4 @@
--module(printer).
+-module(ttt_printer).
 -include("ttt_app.hrl").
 -export([print_menu/0,
          print_board/1,
@@ -22,9 +22,9 @@ print_row([CurrentValue | RemainingValues], Index) ->
   Player1Value = ttt_api:player_1_value(),
   Player2Value = ttt_api:player_2_value(),
   case CurrentValue of
-    Player1Value -> io:format("[~s]", [?PLAYER_1_MARK]);
-    Player2Value -> io:format("[~s]", [?PLAYER_2_MARK]);
-    _ -> io:format("[~w]", [Index])
+    Player1Value -> io:format("[ ~s ]", [?PLAYER_1_MARK]);
+    Player2Value -> io:format("[ ~s ]", [?PLAYER_2_MARK]);
+    _ -> io:format("[ ~w ]", [Index])
   end,
   print_row(RemainingValues, Index+1).
 

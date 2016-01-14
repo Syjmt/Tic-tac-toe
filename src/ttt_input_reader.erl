@@ -1,4 +1,4 @@
--module(input_reader).
+-module(ttt_input_reader).
 -include("ttt_app.hrl").
 -export([get_input_value/1,
          get_legal_player_move/1]).
